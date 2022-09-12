@@ -10,15 +10,9 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2
-@ComponentScan(basePackages = {"com.kamilabiyev.todoapp.controller",
-        "com.kamilabiyev.todoapp.service",
-        "com.kamilabiyev.todoapp.dto"})
 public class SwaggerConfig {
-
 
     @Bean
     public Docket api() {
@@ -26,7 +20,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.kamilabiyev.todoapp.controller"))
-                .paths(PathSelectors.any())
+                .paths(PathSelectors.regex("/api/v1.*"))
                 .build();
     }
 

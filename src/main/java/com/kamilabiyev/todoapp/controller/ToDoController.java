@@ -13,29 +13,32 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/todos")
-//@Api("ToDo controller")
+@Api("ToDo controller")
 public class ToDoController {
 
     private final ToDoService toDoService;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-//    @ApiOperation(value = "Get all.", notes = "Get all todos.")
+    @ApiOperation(value = "Get all.", notes = "Get all todos.")
     public List<ToDoDTO> getAll() {
         return toDoService.getAll();
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-//    @ApiOperation(value = "Get by id.", notes = "Get a todo by id.")
+    @ApiOperation(value = "Get by id.", notes = "Get a todo by id.")
     public ToDoDTO getById(@PathVariable(required = true) Integer id) {
         return toDoService.getById(id);
     }
 
     @RequestMapping(path = "/", method = RequestMethod.POST)
+    @ApiOperation(value = "Add todo.", notes = "Add todo.")
     public ToDoDTO add(@RequestBody(required = true) ToDoDTO toDoDTO) {
         return toDoService.add(toDoDTO);
     }
 
     @RequestMapping(path = "/", method = RequestMethod.PUT)
+    @ApiOperation(value = "Update todo.",
+            notes = "Update existing todo. You can change completed status, title, and content of todo.")
     public ToDoDTO update(@RequestBody(required = true) ToDoDTO toDoDTO) {
         return toDoService.update(toDoDTO);
     }

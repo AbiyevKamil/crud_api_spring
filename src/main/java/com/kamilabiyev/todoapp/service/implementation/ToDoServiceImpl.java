@@ -1,6 +1,8 @@
 package com.kamilabiyev.todoapp.service.implementation;
 
 import com.kamilabiyev.todoapp.dto.ToDoDTO;
+import com.kamilabiyev.todoapp.dto.ToDoDTO;
+import com.kamilabiyev.todoapp.dto.ToDoDTO;
 import com.kamilabiyev.todoapp.mapping.abstraction.ToDoMapper;
 import com.kamilabiyev.todoapp.persistence.entity.ToDo;
 import com.kamilabiyev.todoapp.repository.ToDoRepository;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -39,22 +42,43 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public ToDoDTO add(ToDoDTO toDo) {
-        ToDo model = mapper.mapToToDo(toDo);
-        toDo = mapper.mapToToDoDTO(toDoRepository.save(model));
-        return toDo;
+    public ToDoDTO add(ToDoDTO toDoDTOoDo) {
+        ToDo model = mapper.mapToToDo(toDoDTOoDo);
+        ToDoDTO toDoDTO = mapper.mapToToDoDTO(toDoRepository.save(model));
+        return toDoDTO;
     }
 
     @Override
-    public ToDoDTO update(ToDoDTO toDo) {
-        ToDo model = mapper.mapToToDo(toDo);
+    public ToDoDTO update(ToDoDTO updatedToDoDTO) {
+        ToDo model = mapper.mapToToDo(updatedToDoDTO);
+        Optional<ToDo> exist = toDoRepository.findById(updatedToDoDTO.getId());
+        if (exist.isPresent()) {
+            ToDo item = exist.get();
+            if (updatedToDoDTO.getIsCompleted() != null &&
+                    !updatedToDoDTO.getIsCompleted().equals(item.getIsCompleted())) {
+                item.setIsCompleted(updatedToDoDTO.getIsCompleted());
+            }
+
+            if (!"".equalsIgnoreCase(updatedToDoDTO.getTitle()) &&
+                    !updatedToDoDTO.getTitle().equals(item.getTitle())) {
+                item.setTitle(updatedToDoDTO.getTitle());
+            }
+
+            if (!"".equalsIgnoreCase(updatedToDoDTO.getContent()) &&
+                    !updatedToDoDTO.getContent().equals(item.getContent())) {
+                item.setContent(updatedToDoDTO.getContent());
+            }
+
+            return mapper.mapToToDoDTO(toDoRepository.save(item));
+        }
         var toDoDTO = mapper.mapToToDoDTO(toDoRepository.save(model));
         return toDoDTO;
-
     }
 
     @Override
     public void remove(Integer id) {
-        toDoRepository.findById(id).ifPresent(toDoRepository::delete);
+        var toDo = toDoRepository.findById(id).get();
+        toDo.setIsDeleted(true);
+        toDoRepository.save(toDo);
     }
 }

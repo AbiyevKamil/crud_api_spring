@@ -36,6 +36,8 @@ public class ToDoController {
         return toDoService.add(toDoDTO);
     }
 
+
+    //    Todo
     @RequestMapping(path = "/", method = RequestMethod.PUT)
     @ApiOperation(value = "Update todo.",
             notes = "Update existing todo. You can change completed status, title, and content of todo.")

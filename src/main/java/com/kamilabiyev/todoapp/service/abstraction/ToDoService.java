@@ -11,9 +11,9 @@ public interface ToDoService {
 
     ToDoDTO getById(Integer id);
 
-    ToDoDTO add(ToDoDTO toDo);
+    ToDoDTO add(ToDoDTO toDoDTO);
 
-    ToDoDTO update(ToDoDTO toDo);
+    ToDoDTO update(ToDoDTO toDoDTO);
 
     void remove(Integer id);
 }
